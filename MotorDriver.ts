@@ -21,12 +21,12 @@ enum Dir {
     backward = 0x2,
 }
 
-let PWMA = AnalogPin.P8;
-let AIN1 = DigitalPin.P13;
-let AIN2 = DigitalPin.P12;
-let PWMB = AnalogPin.P16;
-let BIN1 = DigitalPin.P14;
-let BIN2 = DigitalPin.P15;
+let PWMA = AnalogPin.P16;
+let AIN1 = DigitalPin.P14;
+let AIN2 = DigitalPin.P15;
+let PWMB = AnalogPin.P8;
+let BIN1 = DigitalPin.P13;
+let BIN2 = DigitalPin.P12;
 let S0_PIN = AnalogPin.P0;
 let S1_PIN = AnalogPin.P1;
 let S2_PIN = AnalogPin.P2;
@@ -34,14 +34,15 @@ let S2_PIN = AnalogPin.P2;
 //% weight=20 color=#3333FF icon="\uf1b9"
 namespace MotorDriver {
     /**
-	 * Motor Run
-	 * @param speed [0-16] speed of Motor; eg: 10, 0, 16
-	*/
+     * Motor Run
+     * @param speed [0-1023] speed of Motor; eg: 512, 0, 1023
+     */
     //% blockId=MotorDriver_MotorRun block="Motor %m|index %index|speed %speed"
     //% weight=100
-    //% speed.min=0 speed.max=16
+    //% speed.min=0 speed.max=1023
     export function MotorRun(m: Motor, index: Dir, speed: number): void {
-        speed = speed * 64 - 1; // map 0 to 1023
+        // Clamp speed to [0, 1023]
+        speed = Math.max(0, Math.min(1023, speed));
 
         if (m == Motor.A) {
             pins.analogWritePin(PWMA, speed)
