@@ -45,22 +45,26 @@ namespace MotorDriver {
         speed = Math.max(0, Math.min(1023, speed));
 
         if (m == Motor.A) {
-            pins.analogWritePin(PWMA, speed)
+            // Set PWM frequency to 1000 Hz (period = 1000 µs)
+            pins.analogSetPeriod(PWMA, 1000);
+            pins.analogWritePin(PWMA, speed);
             if (index == Dir.forward) {
-                pins.digitalWritePin(AIN1, 0)
-                pins.digitalWritePin(AIN2, 1)
+                pins.digitalWritePin(AIN1, 0);
+                pins.digitalWritePin(AIN2, 1);
             } else {
-                pins.digitalWritePin(AIN1, 1)
-                pins.digitalWritePin(AIN2, 0)
+                pins.digitalWritePin(AIN1, 1);
+                pins.digitalWritePin(AIN2, 0);
             }
         } else {
-            pins.analogWritePin(PWMB, speed)
+            // Set PWM frequency to 1000 Hz (period = 1000 µs)
+            pins.analogSetPeriod(PWMB, 1000);
+            pins.analogWritePin(PWMB, speed);
             if (index == Dir.forward) {
-                pins.digitalWritePin(BIN1, 0)
-                pins.digitalWritePin(BIN2, 1)
+                pins.digitalWritePin(BIN1, 0);
+                pins.digitalWritePin(BIN2, 1);
             } else {
-                pins.digitalWritePin(BIN1, 1)
-                pins.digitalWritePin(BIN2, 0)
+                pins.digitalWritePin(BIN1, 1);
+                pins.digitalWritePin(BIN2, 0);
             }
         }
     }
