@@ -103,7 +103,6 @@ namespace MotorDriver {
             pins.servoWritePin(S2_PIN, 180)
     }
 
-
     //% blockId=ServoStop
     //% block="Servos %s| Stop"
     //% weight=69 
@@ -117,9 +116,9 @@ namespace MotorDriver {
     }
 
     /**
-	 * Servo TurnAngle
-	 * @param angle [0-180] speed of Motor; eg: 180, 0, 180
-	*/
+    * Servo TurnAngle
+    * @param angle [0-180] speed of Motor; eg: 180, 0, 180
+    */
     //% blockId=ServoTurnAngle
     //% block="Servos %s| Turn Angle %angle"
     //% weight=60 
@@ -135,4 +134,53 @@ namespace MotorDriver {
             pins.servoSetPulse(S2_PIN, temp)
     }
 
+    //% blockId=ArcadeModeDrive
+    //% block="Arcade Mode Drive"
+    //% weight=110
+    export function ArcadeModeDrive(): void {
+        let rightPow = 0
+        let leftPow = 0
+        let yVal = 0
+        let xVal = 0
+        let potPos = 0
+        let yPot = 512
+        let xPot = 512
+        const topVal = 548
+        const bottomVal = 476
+        const topSpeed = 1023
+
+        function deflection(potPos: number): number {
+            if (potPos > topVal) {
+                potPos = Math.map(potPos, topVal, 1023, 0, 1023)
+            } else if (potPos < bottomVal) {
+                potPos = Math.map(potPos, bottomVal, 0, 0, -1023)
+            } else {
+                potPos = 0
+            }
+            return potPos
+        }
+
+        basic.forever(() => {
+            xVal = deflection(xPot)
+            yVal = deflection(yPot)
+            leftPow = yVal - xVal
+            rightPow = yVal + xVal
+
+            if (leftPow > 0) {
+                MotorDriver.MotorRun(Motor.A, Dir.forward, Math.min(leftPow, topSpeed))
+            } else if (leftPow < 0) {
+                MotorDriver.MotorRun(Motor.A, Dir.backward, Math.min(Math.abs(leftPow), topSpeed))
+            } else {
+                MotorDriver.MotorStop(Motor.A)
+            }
+
+            if (rightPow > 0) {
+                MotorDriver.MotorRun(Motor.B, Dir.forward, Math.min(rightPow, topSpeed))
+            } else if (rightPow < 0) {
+                MotorDriver.MotorRun(Motor.B, Dir.backward, Math.min(Math.abs(rightPow), topSpeed))
+            } else {
+                MotorDriver.MotorStop(Motor.B)
+            }
+        })
+    }
 }
