@@ -135,9 +135,10 @@ namespace MotorDriver {
     }
 
     //% blockId=ArcadeModeDrive
-    //% block="Arcade Mode Drive"
+    //% block="Arcade Mode Drive with top speed %topSpeed"
     //% weight=110
-    export function ArcadeModeDrive(): void {
+    //% topSpeed.min=0 topSpeed.max=1023
+    export function ArcadeModeDrive(topSpeed: number): void {
         let rightPow = 0
         let leftPow = 0
         let yVal = 0
@@ -147,7 +148,6 @@ namespace MotorDriver {
         let xPot = 512
         const topVal = 548
         const bottomVal = 476
-        const topSpeed = 1023
 
         function deflection(potPos: number): number {
             if (potPos > topVal) {
