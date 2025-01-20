@@ -135,17 +135,17 @@ namespace MotorDriver {
     }
 
     //% blockId=ArcadeModeDrive
-    //% block="Arcade Mode Drive with top speed %topSpeed"
+    //% block="Arcade Drive Mode with xPot %xPot| yPot %yPot| top speed %topSpeed"
     //% weight=110
     //% topSpeed.min=0 topSpeed.max=1023
-    export function ArcadeModeDrive(topSpeed: number): void {
+    //% xPot.defl=512
+    //% yPot.defl=512
+    //% topSpeed.defl=1023
+    export function ArcadeModeDrive(xPot: number = 512, yPot: number = 512, topSpeed: number = 1023): void {
         let rightPow = 0
         let leftPow = 0
         let yVal = 0
         let xVal = 0
-        let potPos = 0
-        let yPot = 512
-        let xPot = 512
         const topVal = 548
         const bottomVal = 476
 
